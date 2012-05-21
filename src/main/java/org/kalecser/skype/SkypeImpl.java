@@ -38,7 +38,7 @@ public class SkypeImpl implements Skype {
 
 	private void listenToNewMessages() throws SkypeException {
 		addChatMessageListener(new ChatMessageAdapter() {@Override public void chatMessageReceived(ChatMessage m) throws SkypeException {
-			newMessageFrom(m.getContent(), m.getSender().getDisplayName());
+			newMessageFrom(m.getContent(), m.getSender().getFullName());
 		}});
 	}
 	
