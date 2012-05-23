@@ -23,8 +23,16 @@ public class FollowMe {
 	}
 	
 	protected void onMessageReceivedFrom(String message, String from) {
-		if (!destination.isPresent())
-			return;
+		if (!isFowardEnabled()) return;
+		if (loopback(from)) return;
 		skype.sendMessageTo(from + ": " + message, destination.get());
+	}
+
+	private boolean isFowardEnabled() {
+		return destination.isPresent();
+	}
+
+	private boolean loopback(String from) {
+		return from.equals(destination.get());
 	}
 }

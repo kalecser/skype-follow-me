@@ -11,6 +11,7 @@ public class FollowMeTest {
 		FollowMe subject = new FollowMe(skype);
 		subject.redirectAllMessagesTo("Betty");
 		skype.simulateMessageFrom("hello", "Steve");
+		skype.simulateMessageFrom("hello", "Betty");
 		assertEquals("Steve: hello -> Betty", skype.sentMessages());
 	}
 
