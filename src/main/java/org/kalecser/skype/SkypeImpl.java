@@ -8,6 +8,7 @@ import org.apache.commons.lang.UnhandledException;
 import com.google.common.base.Optional;
 import com.skype.ChatMessage;
 import com.skype.ChatMessageAdapter;
+import com.skype.Friend;
 import com.skype.SkypeException;
 
 public class SkypeImpl implements Skype {
@@ -30,10 +31,19 @@ public class SkypeImpl implements Skype {
 	@Override
 	public void sendMessageTo(String message, String to) {
 		try {
-			chat(to).send(message);
+			chat(resolveSkypeIdOf(to)).send(message);
 		} catch (SkypeException e) {
 			throw new UnhandledException(e);
 		}
+	}
+
+	private String resolveSkypeIdOf(String to) throws SkypeException {
+		for (Friend f : com.skype.Skype.getContactList().getAllFriends()){
+			if (f.getFullName().equals(to))
+				return f.getId();
+		throw new IllegalStateException("User " + to + " not found");
+		}
+		return null;
 	}
 
 	private void listenToNewMessages() throws SkypeException {

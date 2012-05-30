@@ -1,5 +1,6 @@
 import org.kalecser.skype.FollowMe;
 
+import com.skype.Skype;
 import com.skype.SkypeException;
 
 
@@ -7,22 +8,20 @@ public class Main {
 
 	
 	public static void main(String[] args) throws SkypeException, InterruptedException {
-		final String destination = "kalecser";
+		final String destination = "me";
 		
-		new Thread(){
-			public synchronized void run() {
-				FollowMe subject = new FollowMe();
-				subject.redirectAllMessagesTo(destination);
-				waitWithoutInterruptions();
-			}
+		System.out.println(Skype.isRunning());
+		FollowMe subject = new FollowMe();
+		subject.redirectAllMessagesTo(destination);
+		
+		
+		keepRunning(subject);
+		
+	}
 
-			private void waitWithoutInterruptions() {
-				try {
-					wait();
-				} catch (InterruptedException e) {throw new IllegalStateException(e);}
-			};
-		}.start();
-		
+	private static void keepRunning(FollowMe subject)
+			throws InterruptedException {
+		synchronized(subject) {subject.wait();};
 	}
 	
 }
