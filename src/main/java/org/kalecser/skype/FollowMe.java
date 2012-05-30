@@ -11,7 +11,7 @@ public class FollowMe {
 		this(new SkypeImpl());
 	}
 	
-	public FollowMe(Skype skype) {
+	FollowMe(Skype skype) {
 		this.skype = skype;
 		skype.listenReceivedMessages(new MesssageReceived(){ @Override public void onMessageReceivedFrom(String message, String from){
 			FollowMe.this.onMessageReceivedFrom(message, from);
