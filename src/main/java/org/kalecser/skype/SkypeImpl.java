@@ -3,6 +3,7 @@ package org.kalecser.skype;
 import static com.skype.Skype.addChatMessageListener;
 import static com.skype.Skype.chat;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 
 import com.google.common.base.Optional;
@@ -10,6 +11,7 @@ import com.skype.ChatMessage;
 import com.skype.ChatMessageAdapter;
 import com.skype.Friend;
 import com.skype.SkypeException;
+import com.skype.User;
 
 public class SkypeImpl implements Skype {
 
@@ -40,7 +42,7 @@ public class SkypeImpl implements Skype {
 	private String resolveSkypeIdOf(String to) throws SkypeException {
 		
 		for (Friend f : com.skype.Skype.getContactList().getAllFriends()){
-			if (f.getFullName().equals(to))
+			if (f.getFullName().equals(to) || f.getId().equals(to))
 				return f.getId();
 		}
 		throw new IllegalStateException("User " + to + " not found");
@@ -48,13 +50,20 @@ public class SkypeImpl implements Skype {
 
 	private void listenToNewMessages() throws SkypeException {
 		addChatMessageListener(new ChatMessageAdapter() {@Override public void chatMessageReceived(ChatMessage m) throws SkypeException {
-			newMessageFrom(m.getContent(), m.getSender().getFullName());
+			newMessageFrom(m.getContent(), getName(m.getSender()));
 		}});
 	}
 	
 	protected void newMessageFrom(String message, String from) {
 		if (!messageListener.isPresent()) return;
 		messageListener.get().onMessageReceivedFrom(message, from);
+	}
+
+	private String getName(User sender) throws SkypeException {
+		String fullName = sender.getFullName();
+		if (StringUtils.isEmpty(fullName))
+			return sender.getId();
+		return fullName;
 	}
 
 }
