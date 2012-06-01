@@ -7,7 +7,10 @@ public class Main {
 
 	
 	public static void main(String[] args) throws SkypeException, InterruptedException {
-		final String destination = "me";
+		
+		if (args.length != 1) System.out.println("Usage java -jar skype-follow-me.jar <destination>");
+		
+		final String destination = args[0];
 		
 		FollowMe subject = new FollowMe();
 		subject.redirectAllMessagesTo(destination);

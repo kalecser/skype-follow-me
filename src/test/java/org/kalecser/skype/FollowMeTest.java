@@ -8,12 +8,30 @@ public class FollowMeTest {
 
 	@Test
 	public void onReceivedMessage_RedirectToContact(){
-		FollowMe subject = new FollowMe(skype);
-		subject.redirectAllMessagesTo("Betty");
-		skype.simulateMessageFrom("hello", "Steve");
-		skype.simulateMessageFrom("hello", "Betty");
-		assertEquals("Steve: hello -> Betty", skype.sentMessages());
+		redirectTo("Betty");
+		simulateMessageFrom("hello", "Steve");
+		assertEquals("Steve: hello -> Betty", sentMessages());
+	}
+
+	@Test
+	public void onLoopbackmessage_doNothing(){
+		redirectTo("Steve");
+		simulateMessageFrom("hello", "Steve");
+		assertEquals("", sentMessages());
+	}
+
+	private String sentMessages() {
+		return skype.sentMessages();
+	}
+
+	private void simulateMessageFrom(String message, String from) {
+		skype.simulateMessageFrom(message, from);		
+	}
+
+	private void redirectTo(String destination) {
+		subject.redirectAllMessagesTo(destination);
 	}
 
 	SkypeMock skype = new SkypeMock();
+	FollowMe subject = new FollowMe(skype);
 }
