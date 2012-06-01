@@ -38,12 +38,12 @@ public class SkypeImpl implements Skype {
 	}
 
 	private String resolveSkypeIdOf(String to) throws SkypeException {
+		
 		for (Friend f : com.skype.Skype.getContactList().getAllFriends()){
 			if (f.getFullName().equals(to))
 				return f.getId();
-		throw new IllegalStateException("User " + to + " not found");
 		}
-		return null;
+		throw new IllegalStateException("User " + to + " not found");
 	}
 
 	private void listenToNewMessages() throws SkypeException {
