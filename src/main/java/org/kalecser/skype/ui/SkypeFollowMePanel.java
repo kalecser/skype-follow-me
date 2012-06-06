@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -21,6 +23,7 @@ class SkypeFollowMePanel extends JPanel {
 	private JTextField destination;
 	private JButton startStopRedirect;
 	private JLabel status;
+	private StartStopRedirectListener startStopRedirectListener;
 
 	public SkypeFollowMePanel() {
 		
@@ -57,15 +60,18 @@ class SkypeFollowMePanel extends JPanel {
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
+		
+		escapeClosesWindow();
 
 	}
 
 	public void setStartStopRedirectListener(
 			final StartStopRedirectListener startStopRedirectListener) {
+		this.startStopRedirectListener = startStopRedirectListener;
 		guardListenerNotSet();
-		startStopRedirect.addActionListener(produceStartRedirectListener(startStopRedirectListener));
+		startStopRedirect.addActionListener(produceStartRedirectListener());
 		destination.addActionListener(new ActionListener() {  @Override public void actionPerformed(ActionEvent e) {
-			startStopRedirecting(startStopRedirectListener);
+			startStopRedirecting();
 		} });
 	}
 
@@ -80,6 +86,13 @@ class SkypeFollowMePanel extends JPanel {
 		}
 	}
 
+	private void escapeClosesWindow() {
+		destination.addKeyListener(new KeyAdapter() { @Override public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				SkypeFollowMePanel.this.setVisible(false);
+		} });
+	}
+
 	private void updateStatusForDestination(String destinationNotNull) {
 		this.destination.setText(destinationNotNull);
 		this.startStopRedirect.setText("Stop redirecting");
@@ -88,10 +101,9 @@ class SkypeFollowMePanel extends JPanel {
 		startStopRedirect.setForeground(Color.BLUE);
 	}
 
-	private ActionListener produceStartRedirectListener(
-			final StartStopRedirectListener startStopRedirectListener) {
+	private ActionListener produceStartRedirectListener() {
 		return new ActionListener() {  @Override public void actionPerformed(ActionEvent e) {
-			startStopRedirecting(startStopRedirectListener);
+			startStopRedirecting();
 		}};
 	}
 
@@ -99,8 +111,7 @@ class SkypeFollowMePanel extends JPanel {
 		if (startStopRedirect.getActionListeners().length > 0) throw new IllegalStateException("Listener already set");
 	}
 
-	private void startStopRedirecting(
-			final StartStopRedirectListener startStopRedirectListener) {
+	private void startStopRedirecting() {
 		if (startStopRedirect.getText().startsWith("Stop")){
 			startStopRedirectListener.stopRedirecting();
 			return;

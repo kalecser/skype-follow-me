@@ -2,6 +2,8 @@ package org.kalecser.skype.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog.ModalExclusionType;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.JFrame;
 
@@ -22,18 +24,41 @@ public class SkypeFollowMeScreen {
 		bindToNeeds();
 	}
 
+	public void show() {
+		frame.setLayout(new BorderLayout());
+		frame.add(panel, BorderLayout.CENTER);
+		frame.pack();
+		frame.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);		
+		frame.setVisible(true);
+	}
+
+	public void dispose() {
+		frame.dispose();
+	}
+
 	private void bindToPanel() {
 		panel.setStartStopRedirectListener(new StartStopRedirectListener(){ 
-			
-		public void redirectAllMessagesTo(String destination){
-			SkypeFollowMeScreen.this.redirectAllMessagesTo(destination);
-		}
-
-		@Override
-		public void stopRedirecting() {
-			SkypeFollowMeScreen.this.stopRedirecting();
-		}});
+			public void redirectAllMessagesTo(String destination){
+				SkypeFollowMeScreen.this.redirectAllMessagesTo(destination);
+			}
+	
+			@Override
+			public void stopRedirecting() {
+				SkypeFollowMeScreen.this.stopRedirecting();
+			}
+		});
 		
+		closeWhenPanelIsHidden();
+		
+	}
+
+	private void closeWhenPanelIsHidden() {
+		panel.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				dispose();
+			}
+		});
 	}
 
 	private void bindToNeeds() {
@@ -53,18 +78,6 @@ public class SkypeFollowMeScreen {
 	
 	private void stopRedirecting() {
 		needs.stopRedirecting();
-	}
-
-	public void show() {
-		frame.setLayout(new BorderLayout());
-		frame.add(panel, BorderLayout.CENTER);
-		frame.pack();
-		frame.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);		
-		frame.setVisible(true);
-	}
-
-	public void dispose() {
-		frame.dispose();
 	}
 
 }
