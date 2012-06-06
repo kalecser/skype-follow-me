@@ -7,15 +7,17 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.lang.UnhandledException;
 import org.netbeans.jemmy.operators.JButtonOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
+import org.netbeans.jemmy.operators.JLabelOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
 
 class Operator{
-	private JFrameOperator screen;
-	JTextFieldOperator destination;
-	JButtonOperator startRedirectButton;
+	private final JFrameOperator screen;
+	private final JTextFieldOperator destination;
+	private final JButtonOperator startRedirectButton;
+	private final SkypeFollowMeScreen subject;
 
 	Operator(NeedsMock needs) {
-		SkypeFollowMeScreen subject = new SkypeFollowMeScreen(needs);
+		subject = new SkypeFollowMeScreen(needs);
 		subject.show();
 		screen = new JFrameOperator(SkypeFollowMeScreen.TITLE);
 		destination = new JTextFieldOperator(screen);
@@ -28,6 +30,19 @@ class Operator{
 		waitForEventDispatch();
 	}
 	
+	void stopRedirecting() {
+		new JButtonOperator(screen, "Stop redirecting").doClick();
+		waitForEventDispatch();		
+	}
+	
+	void dispose() {
+		subject.dispose();
+	}
+
+	void assertUserMessage(String string) {
+		new JLabelOperator(screen, string);		
+	}
+
 	private void waitForEventDispatch() {
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {  @Override public void run() {}});
@@ -37,4 +52,5 @@ class Operator{
 			throw new UnhandledException(e);
 		}
 	}
+
 }

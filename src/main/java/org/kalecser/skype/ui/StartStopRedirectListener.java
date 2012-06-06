@@ -1,7 +1,9 @@
 package org.kalecser.skype.ui;
 
-interface StartRedirectListener {
+interface StartStopRedirectListener {
 
 	void redirectAllMessagesTo(String destination);
+
+	void stopRedirecting();
 
 }

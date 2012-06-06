@@ -6,6 +6,7 @@ public class FollowMe {
 
 	private final Skype skype;
 	private Optional<String> destination = Optional.absent();
+	private DestinationListener listener;
 
 	public FollowMe() {
 		this(new SkypeImpl());
@@ -19,13 +20,22 @@ public class FollowMe {
 	}
 
 	public void redirectAllMessagesTo(String destination) {
-		this.destination = Optional.of(destination);
+		setDestination(destination);
+	}
+
+	public void stopRedirect() {
+		setDestination(null);
 	}
 	
 	protected void onMessageReceivedFrom(String message, String from) {
 		if (!isFowardEnabled()) return;
 		if (loopback(from)) return;
 		skype.sendMessageTo(from + ": " + message, destination.get());
+	}
+	
+	private void setDestination(String destination) {
+		this.destination = Optional.fromNullable(destination);
+		listener.redirectingMessagesTo(this.destination);
 	}
 
 	private boolean isFowardEnabled() {
@@ -34,5 +44,10 @@ public class FollowMe {
 
 	private boolean loopback(String from) {
 		return from.equals(destination.get());
+	}
+
+	public void setDestinationListener(DestinationListener listener) {
+		if (this.listener != null) throw new IllegalStateException();
+		this.listener = listener;		
 	}
 }

@@ -2,6 +2,7 @@ package org.kalecser.skype;
 
 import static junit.framework.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class FollowMeTest {
@@ -19,6 +20,32 @@ public class FollowMeTest {
 		simulateMessageFrom("hello", "Steve");
 		assertEquals("", sentMessages());
 	}
+	
+	@Test
+	public void onStartStopRedirect_ShouldNotifyListener(){
+		redirectTo("Steve");
+		stopRedirect();
+		assertEquals(
+				"redirecting messages to: Steve\n" +
+				"stop redirecting", redirectionLog());
+	}
+	
+	SkypeMock skype = new SkypeMock();
+	DestinationListenerLog log = new DestinationListenerLog();
+	FollowMe subject = new FollowMe(skype);
+	
+	@Before
+	public void before(){
+		subject.setDestinationListener(log);
+	}
+
+	private String redirectionLog() {
+		return log.getLog();
+	}
+
+	private void stopRedirect() {
+		subject.stopRedirect();		
+	}
 
 	private String sentMessages() {
 		return skype.sentMessages();
@@ -31,7 +58,4 @@ public class FollowMeTest {
 	private void redirectTo(String destination) {
 		subject.redirectAllMessagesTo(destination);
 	}
-
-	SkypeMock skype = new SkypeMock();
-	FollowMe subject = new FollowMe(skype);
 }
