@@ -4,6 +4,8 @@ interface Skype {
 
 	void listenReceivedMessages(MesssageReceived messsageReceived);
 
-	void sendMessageTo(String string, String string2);
+	void sendMessageTo(String message, String destination);
+
+	boolean isKnownUser(String user);
 
 }

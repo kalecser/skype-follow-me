@@ -39,6 +39,23 @@ public class SkypeImpl implements Skype {
 		}
 	}
 
+	@Override
+	public boolean isKnownUser(String user) {
+		return internalIsKnownUser(user);
+	}
+
+	private boolean internalIsKnownUser(String user) {
+		try {
+			for (Friend f : com.skype.Skype.getContactList().getAllFriends()){
+				if (f.getFullName().equals(user) || f.getId().equals(user))
+					return true;
+			}
+		} catch (SkypeException e) {
+			throw new UnhandledException(e);
+		}
+		return false;
+	}
+
 	private String resolveSkypeIdOf(String to) throws SkypeException {
 		
 		for (Friend f : com.skype.Skype.getContactList().getAllFriends()){

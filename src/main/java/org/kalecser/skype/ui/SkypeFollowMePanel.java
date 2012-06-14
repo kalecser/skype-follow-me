@@ -43,7 +43,7 @@ class SkypeFollowMePanel extends JPanel {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(destination, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+						.addComponent(destination, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
 						.addComponent(status)
 						.addComponent(startStopRedirect, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE))
 					.addContainerGap())

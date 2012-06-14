@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.UnhandledException;
 import org.netbeans.jemmy.operators.JButtonOperator;
+import org.netbeans.jemmy.operators.JDialogOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JLabelOperator;
 import org.netbeans.jemmy.operators.JTextFieldOperator;
@@ -51,6 +52,11 @@ class Operator{
 		} catch (InvocationTargetException e) {
 			throw new UnhandledException(e);
 		}
+	}
+
+	public void assertErrorMessage(String string) {
+		JDialogOperator dialog = new JDialogOperator();
+		new JLabelOperator(dialog).waitText(string);
 	}
 
 }

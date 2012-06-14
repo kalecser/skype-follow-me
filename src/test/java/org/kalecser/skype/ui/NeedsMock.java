@@ -42,4 +42,13 @@ class NeedsMock implements Needs {
 		this.activeRedirectListener.activeRedirectDestinationChangedTo(destination);
 	}
 
+	public void simulateIncident(final String incident) {
+		new Thread(){
+			@Override
+			public void run() {
+				activeRedirectListener.handleIncident(incident);
+			}
+		}.start();
+	}
+
 }

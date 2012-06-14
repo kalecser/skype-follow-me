@@ -9,6 +9,8 @@ public interface Needs {
 
 		void activeRedirectDestinationChangedTo(Optional<String> activeRedirect);
 
+		void handleIncident(String incident);
+
 	}
 
 	void redirectAllMessagesTo(String destination);

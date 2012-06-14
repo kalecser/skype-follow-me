@@ -26,6 +26,12 @@ public class SkypeFollowMeScreenTest {
 		op.redirectAllMessagesTo("Molly");
 	}
 	
+	@Test
+	public void onIncident_ShouldDisplayErrorMessage(){
+		needs.simulateIncident("Error");
+		op.assertErrorMessage("Error");
+	}
+	
 	@After
 	public void after(){
 		op.dispose();

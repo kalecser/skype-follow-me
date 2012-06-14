@@ -5,22 +5,23 @@ import com.google.common.base.Optional;
 public class FollowMe {
 
 	private final Skype skype;
+	private final IncidentsHandler incidentsHandler;
 	private Optional<String> destination = Optional.absent();
 	private DestinationListener listener;
-
-	public FollowMe() {
-		this(new SkypeImpl());
-	}
 	
-	FollowMe(Skype skype) {
+	public FollowMe(Skype skype, IncidentsHandler incidentsHandler) {
 		this.skype = skype;
+		this.incidentsHandler = incidentsHandler;
 		skype.listenReceivedMessages(new MesssageReceived(){ @Override public void onMessageReceivedFrom(String message, String from){
 			FollowMe.this.onMessageReceivedFrom(message, from);
 		}});
 	}
 
 	public void redirectAllMessagesTo(String destination) {
-		setDestination(destination);
+		if (!skype.isKnownUser(destination))
+			incidentsHandler.handleincident("Contact " + destination + " not found, start redirect failed.");
+		else
+			setDestination(destination);
 	}
 
 	public void stopRedirect() {

@@ -6,6 +6,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.google.common.base.Optional;
 
@@ -27,6 +28,7 @@ public class SkypeFollowMeScreen {
 	public void show() {
 		frame.setLayout(new BorderLayout());
 		frame.add(panel, BorderLayout.CENTER);
+		frame.setLocationRelativeTo(null);
 		frame.pack();
 		frame.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);		
 		frame.setVisible(true);
@@ -64,6 +66,11 @@ public class SkypeFollowMeScreen {
 	private void bindToNeeds() {
 		needs.setActiveRedirectListener(new Needs.ActiveRedirectListener(){ public void activeRedirectDestinationChangedTo(Optional<String> destination){
 			SkypeFollowMeScreen.this.activeRedirectDestinationChangedTo(destination);
+		}
+
+		@Override
+		public void handleIncident(String incident) {
+			JOptionPane.showMessageDialog(frame, incident, "error", JOptionPane.ERROR_MESSAGE);
 		}});
 	}
 
