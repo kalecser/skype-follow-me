@@ -2,9 +2,11 @@ package org.kalecser.skype.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog.ModalExclusionType;
+import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -27,11 +29,16 @@ public class SkypeFollowMeScreen {
 
 	public void show() {
 		frame.setLayout(new BorderLayout());
+		frame.setIconImage(resourceAsImage("forward.png"));
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setLocationRelativeTo(null);
 		frame.pack();
 		frame.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);		
 		frame.setVisible(true);
+	}
+
+	private Image resourceAsImage(String name) {
+		return new ImageIcon(SkypeFollowMeScreen.class.getResource(name)).getImage();
 	}
 
 	public void dispose() {
