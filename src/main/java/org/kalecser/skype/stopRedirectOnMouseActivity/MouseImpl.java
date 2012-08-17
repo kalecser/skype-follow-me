@@ -25,6 +25,8 @@ class MouseImpl implements Mouse{
 	private int lastPosition = 0;
 	private int count = 0;
 	private void verifyActivity() {
+		if (mouseListener == null) return;
+		
 		int current = MouseInfo.getPointerInfo().getLocation().x;
 		if (lastPosition == current){
 			count =0;
@@ -32,9 +34,9 @@ class MouseImpl implements Mouse{
 		}
 		
 		lastPosition = current;
-		if (mouseListener != null) count++;
+		count++;
 		
-		if (mouseListener != null && (count % 3 == 0)) mouseListener.mouseActivity();
+		if (count % 3 == 0) mouseListener.mouseActivity();
 	}
 
 }
