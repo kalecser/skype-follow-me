@@ -32,6 +32,7 @@ public class SkypeFollowMeScreen {
 		frame.setIconImage(resourceAsImage("forward.png"));
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		
 		frame.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);		
@@ -90,6 +91,10 @@ public class SkypeFollowMeScreen {
 	private void activeRedirectDestinationChangedTo(
 			Optional<String> destination) {
 		panel.setDestination(destination);
+		if (destination.isPresent())
+			frame.setTitle("To: " + destination.get());
+		else 
+			frame.setTitle(TITLE);
 	}
 
 	private void redirectAllMessagesTo(String destination) {
