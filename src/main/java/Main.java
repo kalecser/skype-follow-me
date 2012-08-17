@@ -1,4 +1,5 @@
 import org.kalecser.skype.FollowMe;
+import org.kalecser.skype.FollowMeImpl;
 import org.kalecser.skype.SkypeImpl;
 
 import com.skype.SkypeException;
@@ -18,7 +19,7 @@ public class Main {
 	}
 
 	private static FollowMe redirectAllMessagesTo(final String destination) {
-		FollowMe subject = new FollowMe(new SkypeImpl(), new ThrowExceptionOnIncidents());
+		FollowMe subject = new FollowMeImpl(new SkypeImpl(), new ThrowExceptionOnIncidents());
 		subject.redirectAllMessagesTo(destination);
 		return subject;
 	}

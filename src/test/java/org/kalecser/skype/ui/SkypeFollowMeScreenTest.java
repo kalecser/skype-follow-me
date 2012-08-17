@@ -32,6 +32,16 @@ public class SkypeFollowMeScreenTest {
 		op.assertErrorMessage("Error");
 	}
 	
+	@Test
+	public void testStopRedirectOnMouseActivity(){
+		needs.simulateActiveRedirectTo("Steve");
+		op.enableStopRedirectOnMouseActivity();
+		op.disableStopRedirectOnMouseActivity();
+		Assert.assertEquals(
+				"enable stop redirect on mouse activity\n" +
+				"disable stop redirect on mouse activity", needs.getOperations());
+	}
+	
 	@After
 	public void after(){
 		op.dispose();

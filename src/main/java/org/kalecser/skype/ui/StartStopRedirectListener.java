@@ -6,4 +6,6 @@ interface StartStopRedirectListener {
 
 	void stopRedirecting();
 
+	void toggleStopOnMouseActivity(boolean active);
+
 }

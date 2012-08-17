@@ -19,4 +19,6 @@ public interface Needs {
 
 	void stopRedirecting();
 
+	void stopRedirectOnMouseActivity(boolean active);
+
 }

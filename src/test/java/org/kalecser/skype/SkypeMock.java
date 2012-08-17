@@ -1,6 +1,7 @@
 package org.kalecser.skype;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.kalecser.skype.MesssageReceived;
 import org.kalecser.skype.Skype;
 
 import com.google.common.base.Optional;

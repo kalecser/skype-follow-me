@@ -1,10 +1,5 @@
 package org.kalecser.skype.ui;
 
-import javax.swing.JPanel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,11 +7,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.google.common.base.Optional;
+import java.awt.Dimension;
 
 @SuppressWarnings("serial")
 class SkypeFollowMePanel extends JPanel {
@@ -26,6 +29,7 @@ class SkypeFollowMePanel extends JPanel {
 	private StartStopRedirectListener startStopRedirectListener;
 
 	public SkypeFollowMePanel() {
+		setSize(new Dimension(600, 110));
 		
 		status = new JLabel("Redirect all skype messages to:");
 		status.setFont(new Font("Dialog", Font.BOLD, 18));
@@ -37,15 +41,26 @@ class SkypeFollowMePanel extends JPanel {
 		startStopRedirect = new JButton("Start Redirect");
 		startStopRedirect.setFocusable(false);
 		startStopRedirect.setFont(new Font("Dialog", Font.BOLD, 18));
+		
+		final JCheckBox tglbtnNewToggleButton = new JCheckBox("Stop on activity");
+		tglbtnNewToggleButton.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				toggleStopOnMouseActivity(tglbtnNewToggleButton.isSelected());
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(destination, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
-						.addComponent(status)
-						.addComponent(startStopRedirect, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE))
+						.addComponent(destination, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addComponent(tglbtnNewToggleButton, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(startStopRedirect, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE))
+						.addComponent(status))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -56,13 +71,19 @@ class SkypeFollowMePanel extends JPanel {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(destination, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(startStopRedirect)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(tglbtnNewToggleButton, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+						.addComponent(startStopRedirect))
+					.addContainerGap(0, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 		
 		escapeClosesWindow();
 
+	}
+
+	protected void toggleStopOnMouseActivity(boolean active) {
+		startStopRedirectListener.toggleStopOnMouseActivity(active);
 	}
 
 	public void setStartStopRedirectListener(

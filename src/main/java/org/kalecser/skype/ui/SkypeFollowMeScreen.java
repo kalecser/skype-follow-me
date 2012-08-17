@@ -33,6 +33,7 @@ public class SkypeFollowMeScreen {
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setLocationRelativeTo(null);
 		frame.pack();
+		
 		frame.setModalExclusionType(ModalExclusionType.TOOLKIT_EXCLUDE);		
 		frame.setVisible(true);
 	}
@@ -54,6 +55,11 @@ public class SkypeFollowMeScreen {
 			@Override
 			public void stopRedirecting() {
 				SkypeFollowMeScreen.this.stopRedirecting();
+			}
+
+			@Override
+			public void toggleStopOnMouseActivity(boolean active) {
+				needs.stopRedirectOnMouseActivity(active);
 			}
 		});
 		

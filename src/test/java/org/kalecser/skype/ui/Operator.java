@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.UnhandledException;
 import org.netbeans.jemmy.operators.JButtonOperator;
+import org.netbeans.jemmy.operators.JCheckBoxOperator;
 import org.netbeans.jemmy.operators.JDialogOperator;
 import org.netbeans.jemmy.operators.JFrameOperator;
 import org.netbeans.jemmy.operators.JLabelOperator;
@@ -15,6 +16,8 @@ class Operator{
 	private final JFrameOperator screen;
 	private final JTextFieldOperator destination;
 	private final JButtonOperator startRedirectButton;
+	private final JCheckBoxOperator enableStopOnMouse;
+	
 	private final SkypeFollowMeScreen subject;
 
 	Operator(NeedsMock needs) {
@@ -23,6 +26,7 @@ class Operator{
 		screen = new JFrameOperator(SkypeFollowMeScreen.TITLE);
 		destination = new JTextFieldOperator(screen);
 		startRedirectButton = new JButtonOperator(screen);
+		enableStopOnMouse = new JCheckBoxOperator(screen);
 	}
 	
 	void redirectAllMessagesTo(String text) {
@@ -42,6 +46,14 @@ class Operator{
 
 	void assertUserMessage(String string) {
 		new JLabelOperator(screen, string);		
+	}
+	
+	void enableStopRedirectOnMouseActivity() {
+		enableStopOnMouse.setSelected(true);
+	}
+
+	void disableStopRedirectOnMouseActivity() {
+		enableStopOnMouse.setSelected(false);
 	}
 
 	private void waitForEventDispatch() {

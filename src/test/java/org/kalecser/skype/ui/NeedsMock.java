@@ -9,7 +9,7 @@ class NeedsMock implements Needs {
 	private ActiveRedirectListener activeRedirectListener;
 	
 	public String getOperations() {
-		return operations.toString();
+		return operations.toString().trim();
 	}
 
 	@Override
@@ -36,6 +36,11 @@ class NeedsMock implements Needs {
 		this.activeRedirectListener = activeRedirectListener;
 		notifyListener();
 				
+	}
+	
+	@Override
+	public void stopRedirectOnMouseActivity(boolean active) {
+		operations.append((active?"enable":"disable") + " stop redirect on mouse activity\n");
 	}
 
 	private void notifyListener() {

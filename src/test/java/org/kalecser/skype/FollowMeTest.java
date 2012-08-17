@@ -41,7 +41,7 @@ public class FollowMeTest {
 	SkypeMock skype = new SkypeMock();
 	DestinationListenerLog destinationLog = new DestinationListenerLog();
 	IncidentsLog incidents = new IncidentsLog();
-	FollowMe subject = new FollowMe(skype, incidents);
+	FollowMe subject = new FollowMeImpl(skype, incidents);
 	
 	@Before
 	public void before(){

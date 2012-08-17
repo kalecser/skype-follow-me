@@ -1,7 +1,9 @@
 import org.kalecser.skype.DestinationListener;
 import org.kalecser.skype.FollowMe;
+import org.kalecser.skype.FollowMeImpl;
 import org.kalecser.skype.IncidentsHandler;
 import org.kalecser.skype.SkypeImpl;
+import org.kalecser.skype.stopRedirectOnMouseActivity.StopRedirectOnMouseActivity;
 import org.kalecser.skype.ui.Needs;
 
 import com.google.common.base.Optional;
@@ -13,9 +15,11 @@ class SkypeFollowMeScreenNeedsImpl implements Needs, IncidentsHandler {
 	
 	private final FollowMe subject;
 	private Optional<ActiveRedirectListener> activeRedirectListener = Optional.absent();
+	private StopRedirectOnMouseActivity stopRedirectOnMouseActivity;
 	
 	public SkypeFollowMeScreenNeedsImpl(){
-		subject = new FollowMe(new SkypeImpl(), this);
+		subject = new FollowMeImpl(new SkypeImpl(), this);
+		stopRedirectOnMouseActivity = new StopRedirectOnMouseActivity(subject);
 	}
 	
 	@Override
@@ -40,6 +44,14 @@ class SkypeFollowMeScreenNeedsImpl implements Needs, IncidentsHandler {
 	@Override
 	public void handleincident(String incident) {
 		activeRedirectListener.get().handleIncident(incident);
+	}
+
+	@Override
+	public void stopRedirectOnMouseActivity(boolean active) {
+		if (active)
+			stopRedirectOnMouseActivity.enable();
+		else
+			stopRedirectOnMouseActivity.disable();
 	}
 
 }
